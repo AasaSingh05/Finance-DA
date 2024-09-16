@@ -1,19 +1,20 @@
 #importing the necessary libraries
 from requests import get
+import pandas as pd
+from SECedgarpyExceptions import ErrorFoundWhileGETRequest
 
 #defining the global Variables to be used
 HEAD ={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0"}
 URL_FORM = "https://www.sec.gov/Archives/edgar/data/" 
+TEN_K_FORM = ""
 
 #defining a function for the filter func later
 #to filter out and get only the 10-k reports
 def filterfunc(a: list) -> bool:
-    
     if(a[0] == "10-K"):
         return True
     else:
         return False 
-
 
 #to extract the url using the CIK which is passed into the func
 def extract10Kurl(cikval: str):
@@ -58,8 +59,54 @@ def extract10Kurl(cikval: str):
     #returning the list of all the urls  
     return urllist
 
+#to convert the URL to direct xlsx Files
+def URLtoXLSX(URLlist: list[str]):
+    
+    #to iterate through all the string urls
+    for urlelt in URLlist:
+        
+        #change the url to end in the xlsx file name
+        urlelt = urlelt[:-17] + "Financial_Report.xlsx"
+        
+    #returning the url list of values
+    return URLlist
+
+def getXLSXfile(urllist: list[str], nameOfFile):
+    
+    #iterating through every url we have
+    for urlelt in urllist:
+        
+        #we go through with the HTTP get request
+        urlresp = get(urlelt, timeout= 5000, headers = HEAD)
+            
+        #we get the status code of the request
+        statcode = urlresp.status_code
+        
+        #error handling to check
+        if(statcode == 404):
+            raise FileNotFoundError
+        
+        #if anything except for 200
+        elif(statcode != 200):
+            raise ErrorFoundWhileGETRequest
+        
+        #if request is successful
+        else:
+            
+            #open a file with the name
+            with (nameOfFile, "wb") as f:
+                
+                #write all binary into the file as given 
+                f.write(urlresp.content)
+
+
+
+
+
+'''
 #test case (intel CIK)
 urllist = extract10Kurl("0000050863")
 
 #Printing all the urls
-print(urllist)
+URLtoXLSX(urllist)
+'''
