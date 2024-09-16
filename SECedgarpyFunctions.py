@@ -86,7 +86,7 @@ def getXLSXfile(urllist: list[str], nameOfFile):
         if(statcode == 404):
             raise FileNotFoundError
         
-        #if anything except for 200
+        #if anything except for 200 or 404
         elif(statcode != 200):
             raise ErrorFoundWhileGETRequest
         
@@ -99,11 +99,24 @@ def getXLSXfile(urllist: list[str], nameOfFile):
                 #write all binary into the file as given 
                 f.write(urlresp.content)
 
+#to generate the CSV report by filtering and keeping the necessary sheets only
+def GenerateCSVreport(nameOfFile):
+    
+    # < ---currently placeholders--- >     
+    '''
+    #to read the contents of the XLSX file
+    data = pd.read_excel(nameOfFile)
+    
+    #heading of the sheet which act as the filter of which sheets to keep
+    sheetheadings = []
+    
+    
+    print()
 
 
 
 
-'''
+
 #test case (intel CIK)
 urllist = extract10Kurl("0000050863")
 
