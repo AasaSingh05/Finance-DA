@@ -15,23 +15,26 @@ def CIKExtractor():
     # Parse the page content
     soup = BeautifulSoup(response.content, 'html.parser')
 
-    # Find the table that contains the S&P 500 company data
-    table = soup.find('table', {'id': 'constituents'})
+    try:
+        # Find the table that contains the S&P 500 company data
+        table = soup.find('table', {'id': 'constituents'})
 
-    # List to store CIK numbers
-    cik_numbers = []
+        # List to store CIK numbers
+        cik_numbers = []
 
-    # Extract each row of the table (excluding the header)
-    rows = table.find_all('tr')[1:]  # Skip the header row
+        # Extract each row of the table (excluding the header)
+        rows = table.find_all('tr')[1:]  # Skip the header row
 
-    # Loop through each row and get the CIK column (6th column in the table)
-    for row in rows:
-        # Extract all the cells in the row
-        cells = row.find_all('td')
-        if len(cells) > 0:
-            # The CIK number is in the 6th column (index 5)
-            cik = cells[6].text.strip()
-            cik_numbers.append(cik)
-    
+        # Loop through each row and get the CIK column (6th column in the table)
+        for row in rows:
+            # Extract all the cells in the row
+            cells = row.find_all('td')
+            if len(cells) > 0:
+                # The CIK number is in the 6th column (index 5)
+                cik = cells[6].text.strip()
+                cik_numbers.append(cik)
+    except:
+        ErrorFoundWhileGETRequest()
+
     #returning the list
     return cik_numbers
