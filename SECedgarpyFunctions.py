@@ -6,7 +6,7 @@ from SECedgarpyExceptions import ErrorFoundWhileGETRequest
 #defining the global Variables to be used
 HEAD ={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0"}
 URL_FORM = "https://www.sec.gov/Archives/edgar/data/" 
-TEN_K_FORM = ""
+
 
 #defining a function for the filter func later
 #to filter out and get only the 10-k reports
@@ -102,6 +102,7 @@ def getXLSXfile(urllist: list[str], nameOfFile):
 
 #to generate the CSV report by filtering and keeping the necessary sheets only
 def GenerateCSVreport(nameOfFile):
+    
     
     # < ---currently placeholders--- >     
     '''
