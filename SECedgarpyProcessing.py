@@ -17,7 +17,7 @@ def filterfunc(a: list) -> bool:
         return False 
 
 #to extract the url using the CIK which is passed into the func
-def extract10Kurl(cikval: str):
+def extract10Kurl(cikval: str) -> list:
 
     #defining the empty lists used to store the interim values
     listofforms = []
@@ -60,7 +60,7 @@ def extract10Kurl(cikval: str):
     return urllist
 
 #to convert the URL to direct xlsx Files
-def URLtoXLSX(URLlist: list[str]):
+def URLtoXLSX(URLlist: list[str]) -> list:
     
     #to iterate through all the string urls
     for urlelt in URLlist:

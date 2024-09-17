@@ -4,7 +4,7 @@ from SECedgarpyExceptions import ErrorFoundWhileGETRequest
 from SECedgarpyProcessing import HEAD
 
 #function to download the XLSX file from the lists
-def getXLSXfile(URLlist: list[str], nameOfFile):
+def getXLSXfile(URLlist: list[str], nameOfFile: str) -> None:
     
     #iterating through every url we have
     for urlelt in URLlist:
