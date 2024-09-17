@@ -26,7 +26,7 @@ def CIKExtractor():
         table = soup.find('table', {'id': 'constituents'})
 
         # List to store CIK numbers
-        cik_numbers = []
+        companyList = []
 
         # Extract each row of the table (excluding the header)
         rows = table.find_all('tr')[1:]  # Skip the header row
@@ -36,9 +36,12 @@ def CIKExtractor():
             # Extract all the cells in the row
             cells = row.find_all('td')
             if len(cells) > 0:
+                # The company name (security) is in the 2nd column (index 1)
+                company_name = cells[1].text.strip()
                 # The CIK number is in the 6th column (index 5)
                 cik = cells[6].text.strip()
-                cik_numbers.append(cik)
+                # Append the tuple (company name, CIK number) to the list
+                companyList.append((company_name, cik))
 
     #returning the list
-    return cik_numbers
+    return companyList
