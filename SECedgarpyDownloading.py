@@ -4,10 +4,10 @@ from SECedgarpyExceptions import ErrorFoundWhileGETRequest
 from SECedgarpyProcessing import HEAD
 
 #function to download the XLSX file from the lists
-def getXLSXfile(urllist: list[str], nameOfFile):
+def getXLSXfile(URLlist: list[str], nameOfFile):
     
     #iterating through every url we have
-    for urlelt in urllist:
+    for urlelt in URLlist:
         
         #we go through with the HTTP get request
         urlresp = get(urlelt, timeout= 5000, headers = HEAD)
@@ -53,8 +53,8 @@ def GenerateCSVreport(nameOfFile):
 
 
 #test case (intel CIK)
-urllist = extract10Kurl("0000050863")
+URLlist = extract10Kurl("0000050863")
 
 #Printing all the urls
-URLtoXLSX(urllist)
+URLtoXLSX(URLlist)
 '''

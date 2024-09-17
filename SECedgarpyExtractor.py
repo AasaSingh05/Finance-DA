@@ -37,11 +37,11 @@ def CIKExtractor():
             cells = row.find_all('td')
             if len(cells) > 0:
                 # The company name (security) is in the 2nd column (index 1)
-                company_name = cells[1].text.strip()
+                companyName = cells[1].text.strip()
                 # The CIK number is in the 6th column (index 5)
                 cik = cells[6].text.strip()
                 # Append the tuple (company name, CIK number) to the list
-                companyList.append((company_name, cik))
+                companyList.append((companyName, cik))
 
     #returning the list
     return companyList

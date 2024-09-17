@@ -12,9 +12,12 @@ urls = list()
 for company in companies:
     data = extract10Kurl(company)
     urls.append(data)
+    
+    
 print("Data extracted")
-file = URLtoXLSX(urls)
+
+fileURL = URLtoXLSX(urls)
 
 #Converting the XLSX file to  CSV file
-GenerateCSVreport(getXLSXfile(file))
+# GenerateCSVreport(getXLSXfile(fileURL))
 print("Required CSV file in #location")
