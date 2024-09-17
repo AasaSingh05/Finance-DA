@@ -71,6 +71,7 @@ def URLtoXLSX(URLlist: list[str]):
     #returning the url list of values
     return URLlist
 
+#function to download the XLSX file from the lists
 def getXLSXfile(urllist: list[str], nameOfFile):
     
     #iterating through every url we have
