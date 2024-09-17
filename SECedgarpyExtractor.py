@@ -45,3 +45,7 @@ def CIKExtractor() -> list:
 
     #returning the list
     return companyList
+
+def GetAllSP500CSV():
+    #add the full code here
+    ''
