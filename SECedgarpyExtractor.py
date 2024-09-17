@@ -8,14 +8,20 @@ from SECedgarpyProcessing import HEAD
 def CIKExtractor():
     # URL of the Wikipedia page
     url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
-
+    
     # Send a GET request to the page
     response = get(url ,timeout=5000 ,headers = HEAD)
+    
+    if(response.status_code == 404):
+        raise FileNotFoundError
 
-    # Parse the page content
-    soup = BeautifulSoup(response.content, 'html.parser')
+    elif(response.status_code != 200):
+        raise ErrorFoundWhileGETRequest
+    
+    else:
+        #Parse the page content
+        soup = BeautifulSoup(response.content, 'html.parser')
 
-    try:
         # Find the table that contains the S&P 500 company data
         table = soup.find('table', {'id': 'constituents'})
 
@@ -33,8 +39,6 @@ def CIKExtractor():
                 # The CIK number is in the 6th column (index 5)
                 cik = cells[6].text.strip()
                 cik_numbers.append(cik)
-    except:
-        ErrorFoundWhileGETRequest()
 
     #returning the list
     return cik_numbers
