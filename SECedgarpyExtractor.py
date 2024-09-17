@@ -1,6 +1,8 @@
+#importing necessary modules
 import requests
 from bs4 import BeautifulSoup
 
+#to get all the necessary CIK for the sp500.csv
 def CIKExtractor():
     # URL of the Wikipedia page
     url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
