@@ -1,6 +1,8 @@
 #importing necessary modules
-import requests
+from requests import get
 from bs4 import BeautifulSoup
+from SECedgarpyExceptions import ErrorFoundWhileGETRequest
+from SECedgarpyProcessing import HEAD
 
 #to get all the necessary CIK for the sp500.csv
 def CIKExtractor():
@@ -8,7 +10,7 @@ def CIKExtractor():
     url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 
     # Send a GET request to the page
-    response = requests.get(url)
+    response = get(url ,timeout=5000 ,headers = HEAD)
 
     # Parse the page content
     soup = BeautifulSoup(response.content, 'html.parser')
