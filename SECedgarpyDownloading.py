@@ -2,43 +2,114 @@
 from requests import get
 from SECedgarpyExceptions import ErrorFoundWhileGETRequest
 from SECedgarpyProcessing import HEAD
+import pandas as pd
 
 #function to download the XLSX file from the lists
-def getXLSXfile(URLlist: list[str], nameOfFile: str) -> None:
+
+def getCSVfile(URLlist: list[str], nameOfFile: str) -> None:
     
-    #iterating through every url we have
+    # iterating through every URL in the list
+    counter = 0
     for urlelt in URLlist:
         
-        #we go through with the HTTP get request
-        urlresp = get(urlelt, timeout= 5000, headers = HEAD)
-            
-        #we get the status code of the request
+        # perform HTTP GET request to download the XLSX file
+        urlresp = get(urlelt, timeout=5000, headers=HEAD)
+        
+        # check the status code for the response
         statcode = urlresp.status_code
         
-        #error handling to check
-        if(statcode == 404):
-            raise FileNotFoundError
+        # handle 404 errors (file not found)
+        if statcode == 404:
+            print(f"File not found at {urlelt}. Skipping...")
+            continue  # Skip this URL and move to the next one
         
-        #if anything except for 200 or 404
-        elif(statcode != 200):
+        # handle other errors (anything other than 200 or 404)
+        elif statcode != 200:
             raise ErrorFoundWhileGETRequest
         
-        #if request is successful
+        # if request is successful, save the file
         else:
+            # increment the counter for unique file names
+            counter += 1
             
-            #open a file with the name
-            with (nameOfFile, "wb") as f:
-                
-                #write all binary into the file as given 
+            # create the final file name with the counter and .xlsx extension
+            FinalNameXLSX = f"{nameOfFile}_{counter}.xlsx"
+            FinalNameCSV = f"{nameOfFile}_{counter}.csv"
+            
+            # open the file in binary write mode and write the content
+            with open(FinalNameXLSX, "wb") as f:
                 f.write(urlresp.content)
+            
+            print(f"Downloaded file: {FinalNameXLSX}")
+            
+            # Convert XLSX to CSV
+            try:
+                # read the XLSX file
+                excel_data = pd.read_excel(FinalNameXLSX)
+                
+                # save the content as CSV
+                excel_data.to_csv(FinalNameCSV, index=False)
+                print(f"Converted {FinalNameXLSX} to {FinalNameCSV}")
+            
+            except Exception as e:
+                print(f"Failed to convert {FinalNameXLSX} to CSV: {e}")
 
+''' PREVIOUS CODE
+def getXLSXfile(URLlist: list[str], nameOfFile: str) -> None:
+    
+    # iterating through every URL in the list
+    counter = 0
+    for urlelt in URLlist:
+        
+        # perform HTTP GET request to download the XLSX file
+        urlresp = get(urlelt, timeout=5000, headers=HEAD)
+        
+        # check the status code for the response
+        statcode = urlresp.status_code
+        
+        # handle 404 errors (file not found)
+        if statcode == 404:
+            print(f"File not found at {urlelt}. Skipping...")
+            continue  # Skip this URL and move to the next one
+        
+        # handle other errors (anything other than 200 or 404)
+        elif statcode != 200:
+            raise ErrorFoundWhileGETRequest
+        
+        # if request is successful, save the file
+        else:
+            # increment the counter for unique file names
+            counter += 1
+            
+            # create the final file name with the counter and .xlsx extension
+            FinalNameXLSX = f"{nameOfFile}_{counter}.xlsx"
+            FinalNameCSV = f"{nameOfFile}_{counter}.csv"
+            
+            # open the file in binary write mode and write the content
+            with open(FinalNameXLSX, "wb") as f:
+                f.write(urlresp.content)
+            
+            print(f"Downloaded file: {FinalNameXLSX}")
+            
+            # Convert XLSX to CSV
+            try:
+                # read the XLSX file
+                excel_data = pd.read_excel(FinalNameXLSX)
+                
+                # save the content as CSV
+                excel_data.to_csv(FinalNameCSV, index=False)
+                print(f"Converted {FinalNameXLSX} to {FinalNameCSV}")
+            
+            except Exception as e:
+                print(f"Failed to convert {FinalNameXLSX} to CSV: {e}")
 
 #to generate the CSV report by filtering and keeping the necessary sheets only
-def GenerateCSVreport(nameOfFile):
+
+def GenerateCSVreport(companyName):
     
     
     # < ---currently placeholders--- >     
-    '''
+    
     #to read the contents of the XLSX file
     data = pd.read_excel(nameOfFile)
     
