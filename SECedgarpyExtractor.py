@@ -3,11 +3,13 @@ from requests import get
 from bs4 import BeautifulSoup
 from SECedgarpyExceptions import ErrorFoundWhileGETRequest
 from SECedgarpyProcessing import HEAD
+import pandas as pd
+
+# URL of the Wikipedia page
+url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 
 #to get all the necessary CIK for the sp500.csv
 def CIKExtractor() -> list:
-    # URL of the Wikipedia page
-    url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
     
     # Send a GET request to the page
     response = get(url ,timeout=5000 ,headers = HEAD)
@@ -47,5 +49,11 @@ def CIKExtractor() -> list:
     return companyList
 
 def GetAllSP500CSV():
-    #add the full code here
-    ''
+    # Read the tables from the Wikipedia page
+    tables = pd.read_html(url)
+
+    # Extract the table containing the S&P 500 companies data
+    sp500_table = tables[0]
+
+    # Save the table to a CSV file
+    sp500_table.to_csv("sp500_companies.csv", index=False)
