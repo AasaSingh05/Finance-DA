@@ -54,7 +54,7 @@ def getCSVfile(URLlist: list[str], nameOfFile: str) -> None:
             except Exception as e:
                 print(f"Failed to convert {FinalNameXLSX} to CSV: {e}")
 
-''' PREVIOUS CODE
+
 def getXLSXfile(URLlist: list[str], nameOfFile: str) -> None:
     
     # iterating through every URL in the list
@@ -95,7 +95,7 @@ def getXLSXfile(URLlist: list[str], nameOfFile: str) -> None:
             try:
                 # read the XLSX file
                 excel_data = pd.read_excel(FinalNameXLSX)
-                
+
                 # save the content as CSV
                 excel_data.to_csv(FinalNameCSV, index=False)
                 print(f"Converted {FinalNameXLSX} to {FinalNameCSV}")
@@ -103,9 +103,10 @@ def getXLSXfile(URLlist: list[str], nameOfFile: str) -> None:
             except Exception as e:
                 print(f"Failed to convert {FinalNameXLSX} to CSV: {e}")
 
+
 #to generate the CSV report by filtering and keeping the necessary sheets only
 
-def GenerateCSVreport(companyName):
+def GenerateCSVreport(nameOfFile):
     
     
     # < ---currently placeholders--- >     
@@ -118,14 +119,3 @@ def GenerateCSVreport(companyName):
     
     
     print()
-
-
-
-
-
-#test case (intel CIK)
-URLlist = extract10Kurl("0000050863")
-
-#Printing all the urls
-URLtoXLSX(URLlist)
-'''

@@ -15,8 +15,6 @@ for company in companies:
     
 print("Data extracted")
 
-print(urls)
-
 # fileURL = URLtoXLSX(urls)
 
 # ReqList = []
