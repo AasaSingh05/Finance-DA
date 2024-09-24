@@ -1,7 +1,7 @@
 #importing necessary modules
 from requests import get
 from bs4 import BeautifulSoup
-from SECedgarpyExceptions import ErrorFoundWhileGETRequest
+from SECedgarpyExceptions import ErrorFoundWhileGETRequest, ExtractionError
 from SECedgarpyProcessing import HEAD
 import pandas as pd
 
@@ -24,29 +24,29 @@ def CIKExtractor() -> list:
             raise ErrorFoundWhileGETRequest
 
         else:
-        # Parse the page content
-        soup = BeautifulSoup(response.content, 'html.parser')
+            # Parse the page content
+            soup = BeautifulSoup(response.content, 'html.parser')
 
-        # Find the table that contains the S&P 500 company data
-        table = soup.find('table', {'id': 'constituents'})
+            # Find the table that contains the S&P 500 company data
+            table = soup.find('table', {'id': 'constituents'})
 
-        if table is None:
-            raise ValueError
+            if table is None:
+                raise ValueError
 
-        # Extract each row of the table (excluding the header)
-        rows = table.find_all('tr')[1:]  # Skip the header row
+            # Extract each row of the table (excluding the header)
+            rows = table.find_all('tr')[1:]  # Skip the header row
 
-        # Loop through each row and get the CIK column (6th column in the table)
-        for row in rows:
-            # Extract all the cells in the row
-            cells = row.find_all('td')
-            if len(cells) > 0:
-                # The company name (security) is in the 2nd column (index 1)
-                companyName = cells[1].text.strip()
-                # The CIK number is in the 6th column (index 5)
-                cik = cells[6].text.strip()
-                # Append the tuple (company name, CIK number) to the list
-                companyList.append((companyName, cik))
+            # Loop through each row and get the CIK column (6th column in the table)
+            for row in rows:
+                # Extract all the cells in the row
+                cells = row.find_all('td')
+                if len(cells) > 0:
+                    # The company name (security) is in the 2nd column (index 1)
+                    companyName = cells[1].text.strip()
+                    # The CIK number is in the 6th column (index 5)
+                    cik = cells[6].text.strip()
+                    # Append the tuple (company name, CIK number) to the list
+                    companyList.append((companyName, cik))
 
     except FileNotFoundError as fnf:
         print(fnf)
