@@ -107,7 +107,6 @@ def getXLSXfile(URLlist: list[str], nameOfFile: str) -> None:
 
 
 #to generate the CSV report by filtering and keeping the necessary sheets only
-
 def GenerateCSVreport(nameOfFile):
 
     # Define the XLSX file path
@@ -147,6 +146,7 @@ def GenerateCSVreport(nameOfFile):
         print(f'Matched sheets have been saved to {csv_file_name}')
     else:
         print("No matching sheets found.")
+
 
 # new combined function
 
