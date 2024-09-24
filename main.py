@@ -19,7 +19,7 @@ print("Data extracted")
 
 # ReqList = []
 
-# for subzip in list(zip()):
+# for subzip in list(zip()):    
     
 
 # #Converting the XLSX file to  CSV file
