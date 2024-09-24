@@ -1,3 +1,4 @@
 testing.py
 sp500_companies.csv
 __pycache__/
+.venv/
