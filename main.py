@@ -1,14 +1,16 @@
-from SECedgarpyExtractor import CIKExtractor
-from SECedgarpyProcessing import extract10Kurl, URLtoXLSX
-from SECedgarpyDownloading import getXLSXfile, GenerateCSVreport
+from SECedgarpyExtractor import *
+from SECedgarpyProcessing import *
+from SECedgarpyDownloading import *
 
 
 #Extracting the CIK numbers for the first 500 companies on the NYSE
+
+print("Getting all sp500 companies in a csv file")
+GetAllSP500CSV()
 companies = CIKExtractor()
-print("Extracted first 500 companies on the NYSE")
 
 #Extracting data from the website and placing it in a XLSX file
-urls = list()
+urls = []
 for company in companies:
     data = extract10Kurl(company[1])
     urls.append(data)
