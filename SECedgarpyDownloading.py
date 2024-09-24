@@ -3,6 +3,7 @@ from requests import get
 from SECedgarpyExceptions import ErrorFoundWhileGETRequest
 from SECedgarpyProcessing import HEAD
 import pandas as pd
+import os
 
 #function to download the XLSX file from the lists
 
@@ -53,6 +54,7 @@ def getCSVfile(URLlist: list[str], nameOfFile: str) -> None:
             
             except Exception as e:
                 print(f"Failed to convert {FinalNameXLSX} to CSV: {e}")
+
 
 
 def getXLSXfile(URLlist: list[str], nameOfFile: str) -> None:
@@ -107,15 +109,42 @@ def getXLSXfile(URLlist: list[str], nameOfFile: str) -> None:
 #to generate the CSV report by filtering and keeping the necessary sheets only
 
 def GenerateCSVreport(nameOfFile):
+
+# Define the XLSX file path
+xlsx_file_path = 'input.xlsx'
+
+# Target sheet names (in lowercase and with spaces)
+target_sheets = ["consolidated statements of income", "consolidated balance sheets"]
+
+# Load the Excel file and extract sheet names
+xlsx_file = pd.ExcelFile(xlsx_file_path)
+all_sheet_names = xlsx_file.sheet_names
+
+# Convert sheet names to lowercase and replace "_" with " " for comparison
+formatted_sheet_names = [sheet_name.lower().replace("_", " ") for sheet_name in all_sheet_names]
+
+# Initialize an empty list to hold dataframes of the matched sheets
+sheets_to_merge = []
+
+# Loop through each formatted sheet name and match with target list
+for original_sheet, formatted_sheet in zip(all_sheet_names, formatted_sheet_names):
+    if formatted_sheet in target_sheets:
+        # Parse the matching sheet and append to the list
+        sheet = xlsx_file.parse(original_sheet)
+        sheets_to_merge.append(sheet)
+        print(f'Sheet {original_sheet} matched and added for merging')
+
+# Concatenate all matched sheets if there are any matches
+if sheets_to_merge:
+    merged_sheets = pd.concat(sheets_to_merge, ignore_index=True)
     
+    # Derive the CSV filename from the XLSX file name
+    csv_file_name = os.path.splitext(os.path.basename(xlsx_file_path))[0] + '.csv'
     
-    # < ---currently placeholders--- >     
+    # Save the merged sheets to a single CSV file
+    merged_sheets.to_csv(csv_file_name, index=False)
     
-    #to read the contents of the XLSX file
-    data = pd.read_excel(nameOfFile)
-    
-    #heading of the sheet which act as the filter of which sheets to keep
-    sheetheadings = []
-    
-    
-    print()
+    print(f'Matched sheets have been saved to {csv_file_name}')
+else:
+    print("No matching sheets found.")
+
