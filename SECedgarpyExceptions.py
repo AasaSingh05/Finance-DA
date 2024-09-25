@@ -1,6 +1,6 @@
-#class created for the error handling
-class ErrorFoundWhileGETRequest:
+# class created for the error handling
+class ErrorFoundWhileGETRequest(Exception):
     pass
 
-class ExtractionError:
+class ExtractionError(Exception):
     pass
